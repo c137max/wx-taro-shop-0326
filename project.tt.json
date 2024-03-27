@@ -1,0 +1,13 @@
+{
+  "miniprogramRoot": "./",
+  "projectname": "wx-vue-shop-0326",
+  "description": "微信农产品商城",
+  "appid": "touristappid",
+  "setting": {
+    "urlCheck": true,
+    "es6": false,
+    "postcss": false,
+    "minified": false
+  },
+  "compileType": "miniprogram"
+}
