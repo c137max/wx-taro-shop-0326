@@ -1,5 +1,16 @@
 <template>
   <view class="page">
+    <nut-swiper
+        :init-page="2"
+        :auto-play="3000"
+        pagination-visible
+        pagination-color="#426543"
+        pagination-unselected-color="#808080"
+    >
+      <nut-swiper-item v-for="(item, index) in imageList" :key="index" style="height: 200px">
+        <img :src="item" alt="" style="height: 100%; width: 100%" draggable="false" />
+      </nut-swiper-item>
+    </nut-swiper>
     <nut-sticky top="0">
       <view class="top-classify">
         <view v-for="(item, index) in items" :key="index" :class="{ active: activeIndex === index }"
@@ -44,6 +55,13 @@ const items = ['推荐', '销量', '新品', '价格', '仅看有货'];
 const activeIndex = ref(0);
 const priceClickCount = ref(0);
 
+const imageList = ref([
+  'https://storage.360buyimg.com/jdc-article/NutUItaro34.jpg',
+  'https://storage.360buyimg.com/jdc-article/NutUItaro2.jpg',
+  'https://storage.360buyimg.com/jdc-article/welcomenutui.jpg',
+  'https://storage.360buyimg.com/jdc-article/fristfabu.jpg'
+])
+
 const commodities = [
   {
     id: 1,
@@ -71,6 +89,28 @@ const commodities = [
     id: 3,
     title: '广西 灵山龙眼本地产水果 4.5-5斤重，免费寄送到小区',
     price: 77,
+    preSale: false,
+    unit: '公斤',
+    salesVolume: 999,
+    salesVolumeDesc: '本店黄皮果销量第1名',
+    explain: '包邮 送货到小区',
+    image: 'https://th.bing.com/th/id/R.d5282a04673094f3d611a5cffb89d8c6?rik=XitV%2br8b%2bmrIOA&riu=http%3a%2f%2fimg4.taojindi.com%2ftc%2fW%2f201607%2f1469094146843.jpg&ehk=d7vRqUqTT9TgQTkxpz9fx8Tm1Iy%2fkt1NrL2J7iCPDHk%3d&risl=&pid=ImgRaw&r=0'
+  },
+  {
+    id: 4,
+    title: '广西 灵山龙眼本地产水果 4.5-5斤重，免费寄送到小区',
+    price: 55.2,
+    preSale: false,
+    unit: '公斤',
+    salesVolume: 999,
+    salesVolumeDesc: '本店黄皮果销量第1名',
+    explain: '包邮 送货到小区',
+    image: 'https://th.bing.com/th/id/R.d5282a04673094f3d611a5cffb89d8c6?rik=XitV%2br8b%2bmrIOA&riu=http%3a%2f%2fimg4.taojindi.com%2ftc%2fW%2f201607%2f1469094146843.jpg&ehk=d7vRqUqTT9TgQTkxpz9fx8Tm1Iy%2fkt1NrL2J7iCPDHk%3d&risl=&pid=ImgRaw&r=0'
+  },
+  {
+    id: 5,
+    title: '广西 灵山龙眼本地产水果 4.5-5斤重，免费寄送到小区',
+    price: 55.2,
     preSale: false,
     unit: '公斤',
     salesVolume: 999,
