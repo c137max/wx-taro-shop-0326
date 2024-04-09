@@ -2,7 +2,7 @@
   <view class="demo">
     <view>
     </view>
-      商品
+      我的订单
     <view>
     </view>
   </view>

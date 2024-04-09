@@ -2,9 +2,10 @@ export default defineAppConfig({
     pages: [
         'pages/index/index',
         'pages/my/index',
-        'pages/shop_cart/index',
+        'pages/shopCart/index',
         'pages/commdityDetail/index',
-        'pages/makeOrder/Index'
+        'pages/makeOrder/index',
+        'pages/order/index'
     ],
     window: {
         backgroundTextStyle: 'light',
@@ -25,10 +26,16 @@ export default defineAppConfig({
                 selectedIconPath: 'static/icon/home_s.png',
             },
             {
-                pagePath: 'pages/shop_cart/index',
+                pagePath: 'pages/shopCart/index',
                 text: '购物车',
                 iconPath: 'static/icon/shop_cart.png',
                 selectedIconPath: 'static/icon/shop_cart_s.png',
+            },
+            {
+                pagePath: 'pages/order/index',
+                text: '订单',
+                iconPath: 'static/icon/order.png',
+                selectedIconPath: 'static/icon/order_s.png',
             },
             {
                 pagePath: 'pages/my/index',
