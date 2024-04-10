@@ -11,7 +11,6 @@ declare module 'vue' {
     NutAvatar: typeof import('@nutui/nutui-taro')['Avatar']
     NutBadge: typeof import('@nutui/nutui-taro')['Badge']
     NutButton: typeof import('@nutui/nutui-taro')['Button']
-    NutCell: typeof import('@nutui/nutui-taro')['Cell']
     NutCheckbox: typeof import('@nutui/nutui-taro')['Checkbox']
     NutCol: typeof import('@nutui/nutui-taro')['Col']
     NutDialog: typeof import('@nutui/nutui-taro')['Dialog']
