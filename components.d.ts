@@ -17,6 +17,7 @@ declare module 'vue' {
     NutCheckbox: typeof import('@nutui/nutui-taro')['Checkbox']
     NutCol: typeof import('@nutui/nutui-taro')['Col']
     NutDialog: typeof import('@nutui/nutui-taro')['Dialog']
+    NutEmpty: typeof import('@nutui/nutui-taro')['Empty']
     NutImagePreview: typeof import('@nutui/nutui-taro')['ImagePreview']
     NutPrice: typeof import('@nutui/nutui-taro')['Price']
     NutRow: typeof import('@nutui/nutui-taro')['Row']
@@ -26,6 +27,8 @@ declare module 'vue' {
     NutSwipeGroup: typeof import('@nutui/nutui-taro')['SwipeGroup']
     NutSwiper: typeof import('@nutui/nutui-taro')['Swiper']
     NutSwiperItem: typeof import('@nutui/nutui-taro')['SwiperItem']
+    NutTabPane: typeof import('@nutui/nutui-taro')['TabPane']
+    NutTabs: typeof import('@nutui/nutui-taro')['Tabs']
     NutTag: typeof import('@nutui/nutui-taro')['Tag']
     SimpleLine: typeof import('./src/components/SimpleLine.vue')['default']
   }
