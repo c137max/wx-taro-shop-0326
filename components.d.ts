@@ -8,11 +8,15 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     Card: typeof import('./src/components/Card.vue')['default']
+    NutActionSheet: typeof import('@nutui/nutui-taro')['ActionSheet']
     NutAvatar: typeof import('@nutui/nutui-taro')['Avatar']
     NutBadge: typeof import('@nutui/nutui-taro')['Badge']
     NutButton: typeof import('@nutui/nutui-taro')['Button']
+    NutCell: typeof import('@nutui/nutui-taro')['Cell']
+    NutCellGroup: typeof import('@nutui/nutui-taro')['CellGroup']
     NutCheckbox: typeof import('@nutui/nutui-taro')['Checkbox']
     NutCol: typeof import('@nutui/nutui-taro')['Col']
+    NutDialog: typeof import('@nutui/nutui-taro')['Dialog']
     NutImagePreview: typeof import('@nutui/nutui-taro')['ImagePreview']
     NutPrice: typeof import('@nutui/nutui-taro')['Price']
     NutRow: typeof import('@nutui/nutui-taro')['Row']
