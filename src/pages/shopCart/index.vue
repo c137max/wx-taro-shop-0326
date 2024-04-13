@@ -121,37 +121,24 @@ const plus = (id) => {
 }
 </script>
 
-<style lang="less">
+<style>
 
-page {
-  background-color: #f7f8fa;
-}
 
-.nut-checkbox {
-  display: var(--nut-checkbox-display, inline-flex);
-  vertical-align: bottom;
-  -webkit-align-items: center;
-  -ms-flex-align: center;
-  align-items: center;
-  margin-right: 10px;
-}
-@button-radius: 10px;
-@button-border: 1px solid #aba8a8;
 .button-minus {
-  border: @button-border;
-  border-top-left-radius: @button-radius;
-  border-bottom-left-radius: @button-radius;
+  border: 1px solid #aba8a8;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
 }
 
 .button-plus {
-  border: @button-border;
-  border-top-right-radius: @button-radius;
-  border-bottom-right-radius: @button-radius;
+  border: 1px solid #aba8a8;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 .button-cell-middle {
-  border-top: @button-border;
-  border-bottom: @button-border;
+  border-top: 1px solid #aba8a8;
+  border-bottom: 1px solid #aba8a8;
   text-align: center;
   line-height: 40px;
 }

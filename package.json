@@ -6,7 +6,6 @@
   "templateInfo": {
     "name": "vue3-NutUI4",
     "typescript": false,
-    "css": "Less",
     "framework": "Vue3"
   },
   "scripts": {
@@ -54,6 +53,7 @@
     "@tarojs/runtime": "3.6.25",
     "@tarojs/shared": "3.6.25",
     "@tarojs/taro": "3.6.25",
+    "pinia": "^2.1.7",
     "postcss-html-transform": "^3.6.25",
     "vue": "^3.2.40"
   },
