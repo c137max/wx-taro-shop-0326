@@ -1,13 +1,14 @@
 import {defineStore} from 'pinia'
 import {computed, ref} from "vue";
+import {isBlank} from "../utils/strings";
 
 
 export const defaultUserState = {
     isLogin: false,
     nickName: '未登录用户',
-    avatarAddress: '',
+    avatarUrl: '/image/test.png',
     token: '',
-    uid: -1,
+    openId: -1,
     unionID: -1
 }
 export const useUserStore = defineStore('user', () => {
@@ -19,19 +20,20 @@ export const useUserStore = defineStore('user', () => {
         return {
             isLogin: userState.value.isLogin,
             nickName: userState.value.nickName,
-            avatarAddress: userState.value.avatarAddress,
-            uid: userState.value.uid,
+            avatarUrl: userState.value.avatarUrl,
+            openId: userState.value.openId,
             unionID: userState.value.unionID,
         }
     })
-    const login = ({nickName, avatarAddress, uid, unionID, token}) => {
+    const token = computed(() => userState.value.token)
+    const login = ({nickName, avatarUrl, openId, unionID, token}) => {
         userState.value.isLogin = true
-        userState.value.nickName = nickName
-        userState.value.avatarAddress = avatarAddress
-        userState.value.uid = uid
+        userState.value.nickName = !isBlank(nickName) ? nickName : openId
+        userState.value.avatarUrl = !isBlank(avatarUrl) ? avatarUrl : defaultUserState.avatarUrl
+        userState.value.openId = openId
         userState.value.unionID = unionID
         userState.value.token = token
     }
     const logout = () => defaultUserState
-    return { userState, isLogin, login, logout, userInfo }
+    return { userState, isLogin, login, logout, userInfo, token }
 })

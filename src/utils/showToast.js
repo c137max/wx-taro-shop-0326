@@ -8,3 +8,4 @@ export const infoToast = (msg) => {
         duration: 2000
     }).then(r => {})
 }
+

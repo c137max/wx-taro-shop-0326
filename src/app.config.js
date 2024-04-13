@@ -5,7 +5,8 @@ export default defineAppConfig({
         'pages/shopCart/index',
         'pages/commdityDetail/index',
         'pages/makeOrder/index',
-        'pages/order/index'
+        'pages/order/index',
+        'pages/login/index',
     ],
     window: {
         backgroundTextStyle: 'light',

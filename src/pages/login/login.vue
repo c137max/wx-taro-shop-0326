@@ -1,10 +1,16 @@
 <script setup>
-import {ref} from "vue";
+import {ref, defineEmits} from "vue";
 import Taro from "@tarojs/taro";
-import {infoToast} from "../../../utils/showToast";
+import {code2SessionApi} from "../../http/login";
+import {infoToast} from "../../utils/showToast";
+import {useUserStore} from "../../store/user";
 
 const agreementCheckbox = ref(false)
 const uInfoCheckbox = ref(true)
+const userStore = useUserStore()
+
+const emit = defineEmits(['afterLogin'])
+
 
 const doLogin = () => {
   if (!agreementCheckbox.value) {
@@ -17,22 +23,64 @@ const doLogin = () => {
   }
   isLoginLoading.value = true
   Taro.login({
-    success: function (res) {
-      if (res.code) {
-        code2Session(res.code)
-      } else {
-        console.error(res)
-        infoToast('登录失败，请稍后重试')
+        success: function (res) {
+          if (res.code) {
+            code2Session(res.code)
+          } else {
+            isLoginLoading.value = false
+            infoToast('登录失败，请稍后重试')
+          }
+        },
+        error: () => {
+          isLoginLoading.value = false
+          infoToast('登录失败，请稍后重试')
+        }
       }
+  )
+}
+const code2Session = (sCode) => {
+  code2SessionApi(sCode)
+      .then((res) => {
+        infoToast('登录成功')
+        userStore.login({
+          token: res.token,
+          openId: res.openid,
+          unionID: res.unionid
+        })
+        isLoginLoading.value = false
+        if (uInfoCheckbox.value) {
+          getUserProfile((userProfile) => {
+            userStore.login({
+              isLogin: false,
+              nickName: userProfile.nickName,
+              avatarUrl: userProfile.avatarUrl,
+              token: res.token,
+              openId: res.openid,
+              unionID: res.unionid
+            })
+            emit('afterLogin', true)
+          })
+        }
+      }).catch(() => {
+    isLoginLoading.value = false
+    emit('afterLogin', false)
+  })
+}
+
+const getUserProfile = (callback) => {
+  Taro.getUserProfile({
+    desc: '用于完善用户资料',
+    success: function (res) {
+      callback(res.userInfo)
     },
-    complete: () => {
-      isLoginLoading.value = false
+    fail: function (res) {
+      console.log(res)
+      infoToast('获取用户信息失败')
+      emit('afterLogin', true)
     }
   })
 }
-const code2Session = (sCode) => {
-  // todo: send code2Session request to the server
-}
+
 const goAgreementPage = (e) => {
   e.preventDefault();
   console.log('goAgreementPage')
@@ -52,7 +100,7 @@ const isLoginLoading = ref(false)
       <view className="flex flex-col gap-2 w-1/2">
         <nut-button :loading="isLoginLoading" @click="doLogin" color="#07c160" shape="round" type="primary">
           <template #icon>
-            <image src="../../../image/wechat.png" className="w-6 h-6"></image>
+            <image src="../../image/wechat.png" className="w-6 h-6"></image>
           </template>
           微信登录
         </nut-button>

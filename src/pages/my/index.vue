@@ -46,26 +46,33 @@
   </view>
   <nut-action-sheet title="更多" v-model:visible="showMore" :menu-items="menuItems" @choose="choose"/>
   <nut-popup v-model:visible="showLoginCard" position="bottom" round :closeable="false" :style="{ height: '70%' }">
-    <login></login>
+    <login @afterLogin="afterLogin"></login>
   </nut-popup>
 </template>
 
 <script setup>
 import {ref, onBeforeMount, reactive} from 'vue';
 import {IconFont} from '@nutui/icons-vue-taro'
-import {defaultUserState, useUserStore} from "../../store/user";
-import Login from "./login/login.vue";
+import {useUserStore} from "../../store/user";
+import Login from "../login/login";
+import {storeToRefs} from "pinia";
 
 const showMore = ref(false)
 const showLoginCard = ref(true)
-const userInfo = reactive(defaultUserState)
-
+const userStore = useUserStore()
+const {userInfo} = storeToRefs(userStore)
 onBeforeMount(() => {
-  const userStore = useUserStore()
+  console.log(userInfo)
   if (userStore.isLogin) {
     showLoginCard.value = false
   }
 })
+
+const afterLogin = (isSucceed) => {
+  if (isSucceed) {
+    showLoginCard.value = false
+  }
+}
 
 const choose = (e) => {
   console.log(e)
