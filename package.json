@@ -56,6 +56,7 @@
     "@tarojs/taro": "3.6.25",
     "axios": "^1.6.8",
     "pinia": "^2.1.7",
+    "pinia-plugin-persistedstate": "^3.2.1",
     "postcss-html-transform": "^3.6.25",
     "vue": "^3.2.40"
   },
