@@ -1,6 +1,7 @@
 import {defineStore} from 'pinia'
 import {computed, ref} from "vue";
 import {isBlank} from "../utils/strings";
+import Taro from "@tarojs/taro";
 
 
 export const defaultUserState = {
@@ -36,4 +37,6 @@ export const useUserStore = defineStore('user', () => {
     }
     const logout = () => defaultUserState
     return { userState, isLogin, login, logout, userInfo, token }
+}, {
+    persist: true,
 })

@@ -5,6 +5,7 @@
     </view>
     <view className="flex flex-col justify-around font-serif text-neutral-600">
       <view>{{ userInfo.nickName }}</view>
+      <view className="font-mono font-light text-blue-500" @click="toUpdateInfo">更新我的信息</view>
     </view>
   </view>
 
@@ -51,7 +52,7 @@
 </template>
 
 <script setup>
-import {ref, onBeforeMount, reactive} from 'vue';
+import {ref, onBeforeMount} from 'vue';
 import {IconFont} from '@nutui/icons-vue-taro'
 import {useUserStore} from "../../store/user";
 import Login from "../login/login";
@@ -62,11 +63,14 @@ const showLoginCard = ref(true)
 const userStore = useUserStore()
 const {userInfo} = storeToRefs(userStore)
 onBeforeMount(() => {
-  console.log(userInfo)
   if (userStore.isLogin) {
     showLoginCard.value = false
   }
 })
+
+const toUpdateInfo = () => {
+
+}
 
 const afterLogin = (isSucceed) => {
   if (isSucceed) {
