@@ -1,5 +1,6 @@
 import Components from 'unplugin-vue-components/webpack';
 import NutUIResolver from '@nutui/auto-import-resolver';
+import path from "node:path";
 
 const {UnifiedWebpackPluginV5} = require('weapp-tailwindcss/webpack')
 const config = {
@@ -19,7 +20,7 @@ const config = {
     },
     sourceRoot: 'src',
     outputRoot: 'dist',
-    plugins: ['@tarojs/plugin-html'],
+    plugins: ['@tarojs/plugin-html', '@tarojs/plugin-http'],
     defineConstants: {},
     copy: {
         patterns: [],
@@ -33,7 +34,23 @@ const config = {
     sass: {
         data: `@import "@nutui/nutui-taro/dist/styles/variables.scss";`
     },
+    alias: {
+        '@/components': path.resolve(__dirname, '..', 'src/components'),
+        '@/utils': path.resolve(__dirname, '..', 'src/utils'),
+        '@/package': path.resolve(__dirname, '..', 'package.json'),
+        '@/project': path.resolve(__dirname, '..', 'project.config.json'),
+        '@/store': path.resolve(__dirname, '..', 'src/store'),
+        '@/router': path.resolve(__dirname, '..', 'src/router'),
+        '@/assets': path.resolve(__dirname, '..', 'src/assets'),
+        '@/pages': path.resolve(__dirname, '..', 'src/pages'),
+        '@': path.resolve(__dirname, '..','src')
+    },
     mini: {
+        enableExtract:true,
+        miniCssExtractPluginOption: {
+            //忽略css文件引入顺序
+            ignoreOrder: true
+        },
         webpackChain(chain) {
             chain.merge({
                 plugin: {

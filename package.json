@@ -6,7 +6,6 @@
   "templateInfo": {
     "name": "vue3-NutUI4",
     "typescript": false,
-    "css": "Less",
     "framework": "Vue3"
   },
   "scripts": {
@@ -44,6 +43,7 @@
     "@tarojs/helper": "3.6.25",
     "@tarojs/plugin-framework-vue3": "3.6.25",
     "@tarojs/plugin-html": "3.6.25",
+    "@tarojs/plugin-http": "^3.6.26",
     "@tarojs/plugin-platform-alipay": "3.6.25",
     "@tarojs/plugin-platform-h5": "3.6.25",
     "@tarojs/plugin-platform-jd": "3.6.25",
@@ -54,6 +54,8 @@
     "@tarojs/runtime": "3.6.25",
     "@tarojs/shared": "3.6.25",
     "@tarojs/taro": "3.6.25",
+    "axios": "^1.6.8",
+    "pinia": "^2.1.7",
     "postcss-html-transform": "^3.6.25",
     "vue": "^3.2.40"
   },
