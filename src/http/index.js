@@ -50,6 +50,14 @@ request.interceptors.response.use(
         const responseData = response.data;
         const { code, data, msg } = responseData;
         if (code !== 0) {
+            if (code === 3004) {
+                Taro.navigateTo({
+                    url: '/pages/login/index',
+                }).then(() => {
+                    infoToast(msg)
+                })
+                return
+            }
             infoToast(msg)
             return Promise.reject(new Error(msg));
         }
