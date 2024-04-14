@@ -45,39 +45,15 @@ const code2Session = (sCode) => {
         userStore.login({
           token: res.token,
           openId: res.openid,
-          unionID: res.unionid
+          unionID: res.unionid,
+          nickName: res.nickname,
+          avatarUrl: res.avatarUrl,
         })
         isLoginLoading.value = false
-        if (uInfoCheckbox.value) {
-          getUserProfile((userProfile) => {
-            userStore.login({
-              isLogin: false,
-              nickName: userProfile.nickName,
-              avatarUrl: userProfile.avatarUrl,
-              token: res.token,
-              openId: res.openid,
-              unionID: res.unionid
-            })
-            emit('afterLogin', true)
-          })
-        }
+        emit('afterLogin', true)
       }).catch(() => {
     isLoginLoading.value = false
     emit('afterLogin', false)
-  })
-}
-
-const getUserProfile = (callback) => {
-  Taro.getUserProfile({
-    desc: '用于完善用户资料',
-    success: function (res) {
-      callback(res.userInfo)
-    },
-    fail: function (res) {
-      console.log(res)
-      infoToast('获取用户信息失败')
-      emit('afterLogin', true)
-    }
   })
 }
 
@@ -111,9 +87,6 @@ const isLoginLoading = ref(false)
               class="inline text-blue-400" @click="goPrivacyPolicyPage">《隐私政策》</span>，
             并授权xx使用该账号的信息（如昵称、头像、收货地址）进行统一管理。
           </p>
-        </nut-checkbox>
-        <nut-checkbox v-model="uInfoCheckbox">
-          <p>自动使用您的微信头像和微信昵称填写到账号个人信息中。</p>
         </nut-checkbox>
       </view>
     </view>
