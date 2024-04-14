@@ -1,19 +1,18 @@
 import {defineStore} from 'pinia'
 import {computed, ref} from "vue";
 import {isBlank} from "../utils/strings";
-import Taro from "@tarojs/taro";
 
 
 export const defaultUserState = {
     isLogin: false,
     nickName: '未登录用户',
-    avatarUrl: '/image/test.png',
+    avatarUrl: '',
     token: '',
     openId: -1,
     unionID: -1
 }
 export const useUserStore = defineStore('user', () => {
-    const userState = ref(defaultUserState)
+    const userState = ref(Object.create(defaultUserState))
     const isLogin = computed(() => {
         return userState.value.isLogin
     })
@@ -30,12 +29,15 @@ export const useUserStore = defineStore('user', () => {
     const login = ({nickName, avatarUrl, openId, unionID, token}) => {
         userState.value.isLogin = true
         userState.value.nickName = !isBlank(nickName) ? nickName : openId
-        userState.value.avatarUrl = !isBlank(avatarUrl) ? avatarUrl : defaultUserState.avatarUrl
+        // userState.value.avatarUrl = !isBlank(avatarUrl) ? avatarUrl : defaultUserState.avatarUrl
+        userState.value.avatarUrl = '/image/test.png'
         userState.value.openId = openId
         userState.value.unionID = unionID
         userState.value.token = token
     }
-    const logout = () => defaultUserState
+    const logout = () => {
+        userState.value = Object.create(defaultUserState)
+    }
     return { userState, isLogin, login, logout, userInfo, token }
 }, {
     persist: true,
