@@ -7,6 +7,7 @@ export default defineAppConfig({
         'pages/makeOrder/index',
         'pages/order/index',
         'pages/login/index',
+        'pages/other/agreement/index',
     ],
     window: {
         backgroundTextStyle: 'light',
