@@ -34,10 +34,14 @@ export const useUserStore = defineStore('user', () => {
         userState.value.unionID = unionID
         userState.value.token = token
     }
+    const updateInfo = ({nickName, avatarUrl}) => {
+        userState.value.nickName = !isBlank(nickName) ? nickName : userState.value.nickName
+        userState.value.avatarUrl = !isBlank(avatarUrl) ? avatarUrl : userState.value.avatarUrl
+    }
     const logout = () => {
         userState.value = Object.create(defaultUserState)
     }
-    return { userState, isLogin, login, logout, userInfo, token }
+    return { userState, isLogin, login, logout, userInfo, token, updateInfo }
 }, {
     persist: true,
 })

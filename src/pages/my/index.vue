@@ -5,7 +5,7 @@
     </view>
     <view className="flex flex-col justify-around font-serif text-neutral-600">
       <view>{{ userInfo.nickName }}</view>
-      <view className="font-mono font-light text-blue-500" @click="toUpdateInfo">更新我的信息</view>
+      <view className="font-mono font-light text-blue-500" @click="toUpdateInfo">使用微信头像和昵称</view>
     </view>
   </view>
 
@@ -50,14 +50,32 @@
     <login @afterLogin="afterLogin"></login>
   </nut-popup>
   <nut-dialog content="确定退出登录么？" v-model:visible="showExitDialog" @ok="onExit" />
+  <nut-toast :msg="state.msg" v-model:visible="state.show" :type="state.type"  :cover="state.cover" />
 </template>
 
 <script setup>
-import {ref, onBeforeMount} from 'vue';
+import {ref, onBeforeMount, reactive} from 'vue';
 import {IconFont} from '@nutui/icons-vue-taro'
 import {useUserStore} from "../../store/user";
 import Login from "../login/login";
 import {storeToRefs} from "pinia";
+import Taro from "@tarojs/taro";
+
+const state = reactive({
+  msg: 'toast',
+  type: 'text',
+  show: false,
+  cover: false,
+  title: '',
+  bottom: '',
+  center: true
+})
+const openToast = (type, msg, cover = false) => {
+  state.show = true
+  state.msg = msg
+  state.type = type
+  state.cover = cover
+}
 
 const showMore = ref(false)
 const showExitDialog = ref(false)
@@ -74,7 +92,24 @@ const onExit = () => {
   showLoginCard.value = true
 }
 const toUpdateInfo = () => {
-
+  openToast('loading', '加载中，请稍侯', true)
+  Taro.getUserProfile(
+      {
+        desc: '用于展示用户资料',
+        lang: 'zh_CN',
+        success: (res) => {
+          console.log(res)
+          userStore.updateInfo({
+            nickName: res.userInfo.nickName,
+            avatarUrl: res.userInfo.avatarUrl
+          })
+          showLoginCard.value = false
+        }
+      },
+      function (err) {
+        console.log(err)
+      }
+  )
 }
 
 const afterLogin = (isSucceed) => {
