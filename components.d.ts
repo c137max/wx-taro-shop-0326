@@ -19,6 +19,7 @@ declare module 'vue' {
     NutDialog: typeof import('@nutui/nutui-taro')['Dialog']
     NutEmpty: typeof import('@nutui/nutui-taro')['Empty']
     NutImagePreview: typeof import('@nutui/nutui-taro')['ImagePreview']
+    NutInput: typeof import('@nutui/nutui-taro')['Input']
     NutPopup: typeof import('@nutui/nutui-taro')['Popup']
     NutPrice: typeof import('@nutui/nutui-taro')['Price']
     NutRow: typeof import('@nutui/nutui-taro')['Row']
@@ -31,6 +32,7 @@ declare module 'vue' {
     NutTabPane: typeof import('@nutui/nutui-taro')['TabPane']
     NutTabs: typeof import('@nutui/nutui-taro')['Tabs']
     NutTag: typeof import('@nutui/nutui-taro')['Tag']
+    NutTextarea: typeof import('@nutui/nutui-taro')['Textarea']
     NutToast: typeof import('@nutui/nutui-taro')['Toast']
     SimpleLine: typeof import('./src/components/SimpleLine.vue')['default']
   }

@@ -11,7 +11,7 @@
 
   <view className="m-3 shadow rounded-lg h-max bg-white">
     <nut-cell-group>
-      <nut-cell title="我附近的配送地址" is-link>
+      <nut-cell title="我附近的配送地址" @click="goToDeliverLocation" is-link>
         <template #icon>
           <IconFont name="location"></IconFont>
         </template>
@@ -26,7 +26,7 @@
           <IconFont name="message"></IconFont>
         </template>
       </nut-cell>
-      <nut-cell title="用户协议" is-link>
+      <nut-cell title="用户协议" @click="goToUserAgreement" is-link>
         <template #icon>
           <IconFont name="edit"></IconFont>
         </template>
@@ -75,6 +75,18 @@ const openToast = (type, msg, cover = false) => {
   state.msg = msg
   state.type = type
   state.cover = cover
+}
+
+const goToDeliverLocation = () => {
+  Taro.navigateTo({
+    url: '/pages/deliverLocation/index'
+  })
+}
+
+const goToUserAgreement = () => {
+  Taro.navigateTo({
+    url: '/pages/other/agreement/index'
+  })
 }
 
 const showMore = ref(false)

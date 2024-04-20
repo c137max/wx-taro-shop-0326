@@ -1,6 +1,6 @@
 import axios from "axios";
 import {useUserStore} from "../store/user";
-import {UNNEEDED_TOKEN_APIS} from "./apis";
+import {NO_DEEL_RESPONSE_APIS, UNNEEDED_TOKEN_APIS} from "./apis";
 import {isBlank} from "../utils/strings";
 import Taro from "@tarojs/taro";
 import {infoToast} from "../utils/showToast";
@@ -47,6 +47,9 @@ request.interceptors.request.use(
 
 request.interceptors.response.use(
     response => {
+        if (NO_DEEL_RESPONSE_APIS.includes(response.config.url)) {
+            return response.data;
+        }
         const responseData = response.data;
         const { code, data, msg } = responseData;
         if (code !== 0) {
