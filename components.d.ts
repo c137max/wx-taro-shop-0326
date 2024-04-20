@@ -19,7 +19,6 @@ declare module 'vue' {
     NutDialog: typeof import('@nutui/nutui-taro')['Dialog']
     NutEmpty: typeof import('@nutui/nutui-taro')['Empty']
     NutImagePreview: typeof import('@nutui/nutui-taro')['ImagePreview']
-    NutInfiniteLoading: typeof import('@nutui/nutui-taro')['InfiniteLoading']
     NutPopup: typeof import('@nutui/nutui-taro')['Popup']
     NutPrice: typeof import('@nutui/nutui-taro')['Price']
     NutRow: typeof import('@nutui/nutui-taro')['Row']
