@@ -31,6 +31,8 @@ declare module 'vue' {
     NutTabPane: typeof import('@nutui/nutui-taro')['TabPane']
     NutTabs: typeof import('@nutui/nutui-taro')['Tabs']
     NutTag: typeof import('@nutui/nutui-taro')['Tag']
+    NutTextarea: typeof import('@nutui/nutui-taro')['Textarea']
+    NutToast: typeof import('@nutui/nutui-taro')['Toast']
     SimpleLine: typeof import('./src/components/SimpleLine.vue')['default']
   }
 }

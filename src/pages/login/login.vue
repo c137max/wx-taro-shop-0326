@@ -6,7 +6,6 @@ import {infoToast} from "../../utils/showToast";
 import {useUserStore} from "../../store/user";
 
 const agreementCheckbox = ref(false)
-const uInfoCheckbox = ref(true)
 const userStore = useUserStore()
 
 const emit = defineEmits(['afterLogin'])
@@ -45,53 +44,31 @@ const code2Session = (sCode) => {
         userStore.login({
           token: res.token,
           openId: res.openid,
-          unionID: res.unionid
+          unionID: res.unionid,
+          nickName: res.nickname,
+          avatarUrl: res.avatarUrl,
         })
         isLoginLoading.value = false
-        if (uInfoCheckbox.value) {
-          getUserProfile((userProfile) => {
-            userStore.login({
-              isLogin: false,
-              nickName: userProfile.nickName,
-              avatarUrl: userProfile.avatarUrl,
-              token: res.token,
-              openId: res.openid,
-              unionID: res.unionid
-            })
-            emit('afterLogin', true)
-          })
-        }
+        emit('afterLogin', true)
       }).catch(() => {
     isLoginLoading.value = false
     emit('afterLogin', false)
   })
 }
 
-const getUserProfile = (callback) => {
-  Taro.getUserProfile({
-    desc: '用于完善用户资料',
-    success: function (res) {
-      callback(res.userInfo)
-    },
-    fail: function (res) {
-      console.log(res)
-      infoToast('获取用户信息失败')
-      emit('afterLogin', true)
-    }
+
+const goPrivacyPolicyPage = () => {
+  Taro.navigateTo({
+    url: '/pages/other/agreement/index'
   })
 }
 
-const goAgreementPage = (e) => {
-  e.preventDefault();
-  console.log('goAgreementPage')
-}
-const goPrivacyPolicyPage = (e) => {
-  e.preventDefault();
-  console.log('goPrivacyPolicyPage')
-}
+
 const isAnimating = ref(false)
 const isLoginLoading = ref(false)
-
+const userAgreement = '《xx用户协议》'
+const privacyPolicy = '《隐私政策》'
+const companyName = 'xx'
 </script>
 
 <template>
@@ -107,16 +84,17 @@ const isLoginLoading = ref(false)
       </view>
       <view class="font-light font-mono text-xs">
         <nut-checkbox v-model="agreementCheckbox" :class="isAnimating? 'animate-shake':''">
-          <p>我已经阅读并同意<span @click="goAgreementPage" class="inline text-blue-400">《xx用户协议》</span>、<span
-              class="inline text-blue-400" @click="goPrivacyPolicyPage">《隐私政策》</span>，
-            并授权xx使用该账号的信息（如昵称、头像、收货地址）进行统一管理。
+          <p>我已经阅读并同意<span class="inline text-blue-400"> {{userAgreement}} </span>、<span
+              class="inline text-blue-400"> {{privacyPolicy}}</span>，
+            并授权{{companyName}}使用该账号的信息（如昵称、头像、收货地址）进行统一管理。
           </p>
-        </nut-checkbox>
-        <nut-checkbox v-model="uInfoCheckbox">
-          <p>自动使用您的微信头像和微信昵称填写到账号个人信息中。</p>
         </nut-checkbox>
       </view>
     </view>
+  </view>
+  <view @click="goPrivacyPolicyPage" className="flex font-mono text-sm  text-blue-400 justify-center gap-10  absolute bottom-5 w-full">
+    <view> {{userAgreement}} </view>
+    <view> {{privacyPolicy}} </view>
   </view>
 </template>
 

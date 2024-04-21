@@ -7,7 +7,17 @@ export default defineAppConfig({
         'pages/makeOrder/index',
         'pages/order/index',
         'pages/login/index',
+        'pages/other/agreement/index',
+        'pages/deliverLocation/index',
     ],
+    "requiredPrivateInfos": [
+        "getLocation",
+    ],
+    permission: {
+        'scope.userLocation': {
+            desc: '您的位置将用于选择您附近的自提点',
+        },
+    },
     window: {
         backgroundTextStyle: 'light',
         navigationBarBackgroundColor: '#fff',
