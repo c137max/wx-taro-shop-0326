@@ -2,9 +2,10 @@
 
 import Taro from "@tarojs/taro";
 import {useReady} from '@tarojs/taro'
-import {reactive, ref} from "vue";
+import {ref} from "vue";
 import {IconFont} from '@nutui/icons-vue-taro'
 import {getLocationDesc, getSelfPickList, wordTransToCoordinate} from "../../http/map";
+import {selfPickUpPng} from "../../image/image";
 
 let mapCtx = null;
 const posDesc = ref('');
@@ -12,7 +13,6 @@ const isLocaling = ref(false);
 const lg = ref(22.324520);
 const la = ref(23.099994);
 
-const markers = reactive([])
 
 useReady(() => {
   mapCtx = Taro.createMapContext('myMap')
@@ -29,12 +29,7 @@ const getLocation = () => {
           la.value = res.latitude
           lg.value = res.longitude
           getLocationDesc(res.latitude, res.longitude).then(getLocationDescThen)
-          getSelfPickList({
-            latitude: res.latitude,
-            longitude: res.longitude
-          }).then(result => {
-            selfPickList.value = result;
-          })
+          getSelfPickAndShow(res.latitude, res.longitude)
         }
       })
     },
@@ -88,10 +83,9 @@ const selfPickList = ref([  // 自提点
   //   contactName: '',
   //   distance: 50
   // },
-
 ])
 const onMarkerTap = (e) => {
-
+  console.log(e)
 }
 
 const displayPageIndex = ref(0)
@@ -99,19 +93,64 @@ const changePageIndex = (index) => {
   displayPageIndex.value = index
 }
 
+const addSelfPosMarker = (latitude, longitude) => {
+  mapCtx.removeMarkers({
+    markerIds: [-1],
+    success() {
+      mapCtx.addMarkers({
+        markers: [
+          {
+            id: -1,
+            latitude,
+            longitude,
+            width: 29,
+            height: 35,
+          }
+        ]
+      })
+    }
+  })
+}
+
 const onMapTap = (e) => {
   console.log(e)
   const {latitude, longitude} = e.detail
+  addSelfPosMarker(latitude, longitude)
   getLocationDesc(latitude, longitude).then(getLocationDescThen)
   mapCtx.moveToLocation({
     latitude,
     longitude,
   })
+  getSelfPickAndShow(latitude, longitude)
+}
+
+const getSelfPickAndShow = (latitude, longitude) => {
   getSelfPickList({
     latitude,
     longitude
   }).then(result => {
     selfPickList.value = result;
+    const markers = result.map(item => {
+      return {
+        id: item.id,
+        latitude: item.latitude,
+        longitude: item.longitude,
+        width: 29,
+        height: 35,
+        callout: {
+          content: item.displayName,
+          borderRadius: 10,
+          padding: 10,
+          display: 'BYCLICK',
+          bgColor: '#ffffff',
+          color: '#000000',
+        },
+        iconPath: selfPickUpPng
+      }
+    })
+    mapCtx.addMarkers({
+      markers
+    })
   })
 }
 
@@ -155,26 +194,25 @@ const navigate = ({latitude, longitude, displayName, address}) => {
           style="width: 100vw; height: 300px;"
           scale="18"
           :show-location="true"
-          :markers="markers"
           :enable-scroll="true"
           :enable-scale="true"
           :enable-overlooking="true"
           :enable-rotate="true"
-          @on-marker-tap="onMarkerTap"
+          @marker-tap="onMarkerTap"
           @tap="onMapTap"
       />
       <scroll-view :scroll-y="true">
         <view v-for="selfPick in selfPickList" :key="selfPick.id" className="bg-white p-2">
           <view className="flex justify-between items-center gap-1  mt-1 ">
-            <view class="flex">
+            <view class="flex gap-2">
               <nut-avatar :src="selfPick.avatarUrl" :size="50" :round="true"/>
-              <view>
+              <view class="flex-1">
                 <view className="font-bold">{{ selfPick.displayName }}</view>
                 <view className="text-gray-400">{{ selfPick.address }}</view>
               </view>
-              <view class="font-light font-mono text-gray-500">
-                {{ selfPick.distance }}米
-              </view>
+            </view>
+            <view class=" font-light font-mono text-gray-500">
+              直线距离{{ selfPick.distance }}米
             </view>
           </view>
           <view class="flex justify-end gap-5 mt-1">
