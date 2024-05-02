@@ -11,7 +11,7 @@
 
   <view className="m-3 shadow rounded-lg h-max bg-white">
     <nut-cell-group>
-      <nut-cell title="我附近的配送地址" @click="goToDeliverLocation" is-link>
+      <nut-cell title="我的配送点" @click="goToDeliverLocation" is-link>
         <template #icon>
           <IconFont name="location"></IconFont>
         </template>
