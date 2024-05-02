@@ -45,8 +45,6 @@ const code2Session = (sCode) => {
           token: res.token,
           openId: res.openid,
           unionID: res.unionid,
-          nickName: res.nickname,
-          avatarUrl: res.avatarUrl,
         })
         isLoginLoading.value = false
         emit('afterLogin', true)

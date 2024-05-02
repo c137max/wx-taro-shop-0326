@@ -16,6 +16,11 @@
           <IconFont name="location"></IconFont>
         </template>
       </nut-cell>
+      <nut-cell title="我的联系方式" is-link>
+        <template #icon>
+          <IconFont name="comment"></IconFont>
+        </template>
+      </nut-cell>
       <nut-cell title="我的代销" is-link>
         <template #icon>
           <IconFont name="my"></IconFont>
@@ -60,7 +65,7 @@ import {useUserStore} from "../../store/user";
 import Login from "../login/login";
 import {storeToRefs} from "pinia";
 import Taro from "@tarojs/taro";
-import {updateUserProfileApi} from "../../http/login";
+import {getUserProfile, updateUserProfileApi} from "../../http/login";
 
 const state = reactive({
   msg: 'toast',
@@ -134,6 +139,12 @@ const toUpdateInfo = () => {
 const afterLogin = (isSucceed) => {
   if (isSucceed) {
     showLoginCard.value = false
+    getUserProfile().then((res) => {
+      userStore.updateInfo({
+        nickName: res.nickName,
+        avatarUrl: res.avatarUrl
+      })
+    })
   }
 }
 

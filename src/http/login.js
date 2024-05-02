@@ -12,3 +12,7 @@ export const updateUserProfileApi = ({openId, avatarUrl, nickName}) => {
          avatarUrl, nickName
     })
 }
+
+export const getUserProfile = () => {
+    return request.get(LOGIN_API.getUserProfile)
+}

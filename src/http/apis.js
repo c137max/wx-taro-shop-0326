@@ -3,6 +3,7 @@
 class LOGIN_API {
     static code2Session = '/wxLogin/code2Session'
     static updateUserProfile = '/user/wxUser/'
+    static  getUserProfile = '/user/wxUser/profile'
 }
 class MAPPER_API {
     static locationDesc = 'https://h5gw.map.qq.com/ws/geocoder/v1/'
