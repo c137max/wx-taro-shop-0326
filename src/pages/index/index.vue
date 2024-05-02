@@ -6,20 +6,27 @@
         pagination-visible
         pagination-color="#426543"
         pagination-unselected-color="#808080"
+        v-if="slideshowList.length > 0"
     >
-      <nut-swiper-item v-for="(item, index) in imageList" :key="index" style="height: 200px">
-        <img :src="item" alt="" style="height: 100%; width: 100%" draggable="false" />
+      <nut-swiper-item v-for="(item, index) in slideshowList" :key="index" style="height: 200px">
+        <img :src="item" alt="" style="height: 100%; width: 100%" draggable="false"/>
       </nut-swiper-item>
     </nut-swiper>
     <nut-sticky top="0">
       <view class="top-classify">
         <view v-for="(item, index) in items" :key="index" :class="{ active: activeIndex === index }"
-          @click="handleClick(index)">
-          <view class="price-d">
-            {{ item }}
+              @click="handleTabClick(index)">
+          <view class="flex justify-center gap-1 justify-items-center items-center ">
+            <view>
+              {{ item }}
+            </view>
             <span v-if="item === '价格'">
-              <IconFont v-show="priceClickCount === 1" name="triangle-down" />
-              <IconFont v-show="priceClickCount === 2" name="triangle-up" />
+              <view className="flex flex-col">
+                <IconFont size="10" v-show="priceClickCount === 1" color="#fa2c19" name="triangle-up"/>
+                <IconFont size="10" v-show="priceClickCount !== 1" color="#c4c5c6" name="triangle-up"/>
+                <IconFont size="10" v-show="priceClickCount === 2" color="#fa2c19" name="triangle-down"/>
+                <IconFont size="10" v-show="priceClickCount !== 2" color="#c4c5c6" name="triangle-down"/>
+              </view>
             </span>
           </view>
         </view>
@@ -27,7 +34,7 @@
     </nut-sticky>
     <view class="commodities">
       <view class="commodity-card" @click="() => handleClickCommodity(commodity.id)"
-        v-for="(commodity, index) in commodities" :key="commodity.id">
+            v-for="(commodity, index) in commodities" :key="commodity.id">
         <image class="commodity-image" :src="commodity.image"></image>
         <view class="commodity-detail">
           <view class="commodity-title">{{ commodity.title }}</view>
@@ -35,91 +42,52 @@
             <span class="commodity-sales-volume">{{ commodity.salesVolumeDesc }}</span>
           </view>
           <view class="commodity-price">
-            <nut-price :price="commodity.price" size="normal" />
+            <nut-price :price="commodity.price" size="normal"/>
           </view>
           <view>
             <span class="commodity-sales-explain">{{ commodity.unit }} {{ commodity.explain }} 月销量:{{
-          commodity.salesVolume }} </span>
+                commodity.salesVolume
+              }} </span>
           </view>
         </view>
+      </view>
+    </view>
+    <view v-show="commodities.length===0">
+      <nut-empty description="暂时没有商品在售卖，请尝试下拉刷新，或者过一段时间再来吧~"></nut-empty>
+    </view>
+    <view class=" h-5">
+    </view>
+    <view class="w-full m-auto text-center h-7 fixed bottom-0">
+      <view v-show="isLoadingMore">
+        <IconFont name="loading"></IconFont>
       </view>
     </view>
   </view>
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { IconFont } from '@nutui/icons-vue-taro';
-import Taro from '@tarojs/taro'
+import {ref} from 'vue';
+import {IconFont} from '@nutui/icons-vue-taro';
+import Taro, {usePullDownRefresh} from '@tarojs/taro'
+import {useReachBottom} from '@tarojs/taro'
+import {infoToast} from "../../utils/showToast";
+
 const items = ['推荐', '销量', '新品', '价格', '仅看有货'];
 const activeIndex = ref(0);
 const priceClickCount = ref(0);
+const isLoadingMore = ref(false);
 
-const imageList = ref([
-  'https://storage.360buyimg.com/jdc-article/NutUItaro34.jpg',
-  'https://storage.360buyimg.com/jdc-article/NutUItaro2.jpg',
-  'https://storage.360buyimg.com/jdc-article/welcomenutui.jpg',
-  'https://storage.360buyimg.com/jdc-article/fristfabu.jpg'
+const slideshowList = ref([
+  // 'https://storage.360buyimg.com/jdc-article/NutUItaro34.jpg',
+  // 'https://storage.360buyimg.com/jdc-article/NutUItaro2.jpg',
+  // 'https://storage.360buyimg.com/jdc-article/welcomenutui.jpg',
+  // 'https://storage.360buyimg.com/jdc-article/fristfabu.jpg'
 ])
 
 const commodities = [
-  {
-    id: 1,
-    title: '广西灵山黄皮果本地产水果 4.5-5斤重，免费寄送到小区',
-    price: 88,
-    unit: '公斤',
-    preSale: true,
-    salesVolume: 199,
-    salesVolumeDesc: '本店黄皮果销量第1名',
-    explain: '包邮 送货到小区',
-    image: 'https://th.bing.com/th/id/R.d5282a04673094f3d611a5cffb89d8c6?rik=XitV%2br8b%2bmrIOA&riu=http%3a%2f%2fimg4.taojindi.com%2ftc%2fW%2f201607%2f1469094146843.jpg&ehk=d7vRqUqTT9TgQTkxpz9fx8Tm1Iy%2fkt1NrL2J7iCPDHk%3d&risl=&pid=ImgRaw&r=0'
-  },
-  {
-    id: 2,
-    title: '广西 灵山本地产水果 4.5-5斤重，免费寄送到小区',
-    price: 77,
-    unit: '公斤',
-    preSale: false,
-    salesVolume: 199,
-    salesVolumeDesc: '本店黄皮果销量第1名',
-    explain: '包邮 送货到小区',
-    image: 'https://th.bing.com/th/id/R.d5282a04673094f3d611a5cffb89d8c6?rik=XitV%2br8b%2bmrIOA&riu=http%3a%2f%2fimg4.taojindi.com%2ftc%2fW%2f201607%2f1469094146843.jpg&ehk=d7vRqUqTT9TgQTkxpz9fx8Tm1Iy%2fkt1NrL2J7iCPDHk%3d&risl=&pid=ImgRaw&r=0'
-  },
-  {
-    id: 3,
-    title: '广西 灵山龙眼本地产水果 4.5-5斤重，免费寄送到小区',
-    price: 77,
-    preSale: false,
-    unit: '公斤',
-    salesVolume: 999,
-    salesVolumeDesc: '本店黄皮果销量第1名',
-    explain: '包邮 送货到小区',
-    image: 'https://th.bing.com/th/id/R.d5282a04673094f3d611a5cffb89d8c6?rik=XitV%2br8b%2bmrIOA&riu=http%3a%2f%2fimg4.taojindi.com%2ftc%2fW%2f201607%2f1469094146843.jpg&ehk=d7vRqUqTT9TgQTkxpz9fx8Tm1Iy%2fkt1NrL2J7iCPDHk%3d&risl=&pid=ImgRaw&r=0'
-  },
-  {
-    id: 4,
-    title: '广西 灵山龙眼本地产水果 4.5-5斤重，免费寄送到小区',
-    price: 55.2,
-    preSale: false,
-    unit: '公斤',
-    salesVolume: 999,
-    salesVolumeDesc: '本店黄皮果销量第1名',
-    explain: '包邮 送货到小区',
-    image: 'https://th.bing.com/th/id/R.d5282a04673094f3d611a5cffb89d8c6?rik=XitV%2br8b%2bmrIOA&riu=http%3a%2f%2fimg4.taojindi.com%2ftc%2fW%2f201607%2f1469094146843.jpg&ehk=d7vRqUqTT9TgQTkxpz9fx8Tm1Iy%2fkt1NrL2J7iCPDHk%3d&risl=&pid=ImgRaw&r=0'
-  },
-  {
-    id: 5,
-    title: '广西 灵山龙眼本地产水果 4.5-5斤重，免费寄送到小区',
-    price: 55.2,
-    preSale: false,
-    unit: '公斤',
-    salesVolume: 999,
-    salesVolumeDesc: '本店黄皮果销量第1名',
-    explain: '包邮 送货到小区',
-    image: 'https://th.bing.com/th/id/R.d5282a04673094f3d611a5cffb89d8c6?rik=XitV%2br8b%2bmrIOA&riu=http%3a%2f%2fimg4.taojindi.com%2ftc%2fW%2f201607%2f1469094146843.jpg&ehk=d7vRqUqTT9TgQTkxpz9fx8Tm1Iy%2fkt1NrL2J7iCPDHk%3d&risl=&pid=ImgRaw&r=0'
-  }
+
 ]
-const handleClick = (index) => {
+const handleTabClick = (index) => {
   activeIndex.value = index;
 
   if (items[activeIndex.value] === '价格') {
@@ -133,6 +101,27 @@ const handleClick = (index) => {
   }
 
 };
+
+usePullDownRefresh(() => {
+  console.log('pull down refresh')
+  // 触发下拉刷新事件
+  Taro.showLoading({
+    title: '加载中',
+  })
+  setTimeout(() => {
+    Taro.hideLoading()
+    Taro.stopPullDownRefresh()
+  }, 1000);
+})
+useReachBottom(() => {  // 下滑触底事件
+  console.log('reach bottom')
+  isLoadingMore.value = true;
+  setTimeout(() => {
+    isLoadingMore.value = false;
+    infoToast("已经没有更多了... ...")
+  }, 1000);
+})
+
 
 const handleClickCommodity = (cid) => {
   Taro.navigateTo({
@@ -153,7 +142,8 @@ const handleClickCommodity = (cid) => {
 }
 
 
-.commodity-price {}
+.commodity-price {
+}
 
 .commodity-detail {
   padding: 10px;
@@ -200,12 +190,9 @@ const handleClickCommodity = (cid) => {
   grid-column-gap: 20px;
   grid-row-gap: 20px;
   padding: 20px;
-
+  width: 100%;
 }
 
-.price-d {
-  display: flex;
-}
 
 .top-classify {
   width: 100%;
