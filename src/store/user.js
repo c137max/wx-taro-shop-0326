@@ -41,7 +41,7 @@ export const useUserStore = defineStore('user', () => {
     const logout = () => {
         userState.value = Object.create(defaultUserState)
     }
-    return { userState, isLogin, login, logout, userInfo, token, updateInfo }
+    return {userState, isLogin, login, logout, userInfo, token, updateInfo}
 }, {
     persist: true,
 })

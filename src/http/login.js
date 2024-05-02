@@ -6,3 +6,9 @@ export const code2SessionApi = (code) => {
         code,
     })
 }
+
+export const updateUserProfileApi = ({openId, avatarUrl, nickName}) => {
+    return request.put(LOGIN_API.updateUserProfile + openId, {
+         avatarUrl, nickName
+    })
+}

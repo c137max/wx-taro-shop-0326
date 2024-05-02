@@ -60,6 +60,7 @@ import {useUserStore} from "../../store/user";
 import Login from "../login/login";
 import {storeToRefs} from "pinia";
 import Taro from "@tarojs/taro";
+import {updateUserProfileApi} from "../../http/login";
 
 const state = reactive({
   msg: 'toast',
@@ -115,6 +116,12 @@ const toUpdateInfo = () => {
             nickName: res.userInfo.nickName,
             avatarUrl: res.userInfo.avatarUrl
           })
+          updateUserProfileApi({openId: userStore.userInfo.openId,
+            nickName: res.userInfo.nickName,
+            avatarUrl: res.userInfo.avatarUrl})
+              .then((res) => {
+                console.log(res)
+              })
           showLoginCard.value = false
         }
       },
