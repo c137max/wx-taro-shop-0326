@@ -1,8 +1,10 @@
 <script setup>
-import Card from '../../components/Card.vue'
 import {IconFont} from '@nutui/icons-vue-taro';
-import SimpleLine from "../../components/SimpleLine.vue";
 import {ref} from "vue";
+import {EventChannel} from "@tarojs/shared";
+import Taro from "@tarojs/taro";
+
+const remark = ref('无')
 
 const commodities = ref([
   {
@@ -39,30 +41,49 @@ const plus = (id) => {
       }
   )
 }
+
+const go2Remark = () => {
+  Taro.navigateTo({
+    url: '/pages/makeOrder/remark/index?value=' + remark.value,
+    events: {
+      orderRemark(res) {
+        console.log(res)
+        remark.value = res
+      }
+    }
+  })
+}
+
 </script>
 
 <template>
-  <Card class="card">
-    <view>提货人：易某某 18xxxxxx000</view>
-    <SimpleLine color="#f7f8fa" height="2px"></SimpleLine>
-    <view>自提点：亿众便利店建政店</view>
-    <view class="shop-info">
-      <image src="../../image/test.png" class="shop-image" style="height: 50px; width: 50px" mode="aspectFit"></image>
-      <view class="shop-info-desc">
-        <view>距您14米</view>
-        <view class="shop-address tow-line-text">
-          广西...一大段地址文字可换行广西...一大段地址文字可换行广西...一大段地址文字可换行广西...一大段地址文字可换行
+  <view class=" font-sans">
+    <view hover-class="hover-bg" hover-start-time="10" hover-stay-time="100" class="bg-white  mt-2">
+      <view class=" flex justify-between items-center p-2 h-6">
+        <view>提货人：易某某 18xxxxxx000</view>
+        <view>
+          <icon-font size="13" name="right"></icon-font>
         </view>
       </view>
-      <view class="address-change">
-        <view>切换</view>
-        <IconFont size="small" name="rect-right"></IconFont>
+    </view>
+    <view hover-class="hover-bg" hover-start-time="10" hover-stay-time="100" class="bg-white mt-2 p-2">
+      <view class="">自提点：亿众便利店建政店</view>
+      <view class="shop-info">
+        <image src="../../image/test.png" class="shop-image" style="height: 50px; width: 50px" mode="aspectFit"></image>
+        <view class="shop-info-desc">
+          <view>距您14米</view>
+          <view class="shop-address tow-line-text">
+            广西...一大段地址文字可换行广西...一大段地址文字可换行广西...一大段地址文字可换行广西...一大段地址文字可换行
+          </view>
+        </view>
+        <view>
+          <IconFont size="13" name="rect-right"></IconFont>
+        </view>
       </view>
     </view>
-  </Card>
-  <Card class="card">
-    <view>明天16:00可取货</view>
-    <SimpleLine color="#f7f8fa" height="2px"></SimpleLine>
+  </view>
+  <view class="bg-white p-2 mt-2">
+    <view class="mb-1">明天16:00可取货</view>
     <view class="commodity-box" v-for="(commodity, index) in commodities" :key="index">
       <view class="commodity-info">
         <image :src="commodity.image" class="shop-image" style="height: 100px; width: 100px"
@@ -78,29 +99,35 @@ const plus = (id) => {
       </view>
       <view class="quantity-button-group">
         <IconFont @click="() => minus(commodity.id)" name="minus" class="button-cell button-minus"></IconFont>
-        <view class="button-cell button-cell-middle ">{{ commodity.buyCount }}</view>
+        <view class="button-cell button-cell-middle text-red-500">{{ commodity.buyCount }}</view>
         <IconFont @click="() => plus(commodity.id)" class="button-cell button-plus" name="plus"></IconFont>
       </view>
     </view>
-  </Card>
-  <Card class="card">
+  </view>
+  <view class="mt-2 p-2 bg-white">
     <view class="check-items">
       <view class="check-item">
         <view>商品总额</view>
         <view>￥ 7.99</view>
       </view>
-      <view class="check-item">
+      <view hover-class="hover-bg" hover-start-time="10" hover-stay-time="100" class="check-item">
         <view>优惠券</view>
-        <view>暂无优惠券可用 ></view>
+        <view class="font-sans flex items-center justify-between gap-3">
+          <view>暂无优惠券可用</view>
+          <icon-font size="13" name="right"></icon-font>
+        </view>
       </view>
     </view>
-  </Card>
-  <Card class="card" style="display: flex; justify-content: space-between; align-items: center">
+  </view>
+  <view @click="go2Remark" hover-class="hover-bg" hover-start-time="10" hover-stay-time="100" class="bg-white  mt-2 p-2 flex items-center justify-between">
     <view>
       订单备注
     </view>
-    <view>some-world ></view>
-  </Card>
+    <view class="font-sans flex items-center justify-between gap-3">
+      <view class="w-24 truncate text-end">{{remark}}</view>
+      <icon-font size="13" name="right"></icon-font>
+    </view>
+  </view>
   <view class="bottom-card">
     <view>
       <span>待支付<nut-price :price="7.99" size="large"></nut-price></span>
@@ -115,6 +142,7 @@ const plus = (id) => {
 page {
   background-color: #f7f8fa;
 }
+
 .bottom-card {
   position: fixed;
   bottom: 0;
@@ -126,15 +154,21 @@ page {
   padding: 20px;
   gap: 20px;
 }
+
 .check-items {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
+.hover-bg {
+  background-color: #f7f8fa;
+}
+
 .check-item {
   display: flex;
   justify-content: space-between;
 }
+
 .commodity-box {
   position: relative;
 }
@@ -153,23 +187,7 @@ page {
   height: 40px;
 }
 
-@button-radius: 10px;
-@button-border: 1px solid #aba8a8;
-.button-minus {
-  border: @button-border;
-  border-top-left-radius: @button-radius;
-  border-bottom-left-radius: @button-radius;
-}
-
-.button-plus {
-  border: @button-border;
-  border-top-right-radius: @button-radius;
-  border-bottom-right-radius: @button-radius;
-}
-
 .button-cell-middle {
-  border-top: @button-border;
-  border-bottom: @button-border;
   text-align: center;
   line-height: 40px;
 }
@@ -207,14 +225,14 @@ page {
 }
 
 .card {
-  margin: 20px 10px 10px;
+  margin: 20px 0 0;
   padding: 10px;
 }
 
 .shop-info {
   display: flex;
   gap: 5px;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   margin-top: 10px;
 }

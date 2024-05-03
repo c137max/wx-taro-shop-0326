@@ -9,6 +9,7 @@ export default defineAppConfig({
         'pages/login/index',
         'pages/other/agreement/index',
         'pages/deliverLocation/index',
+        'pages/makeOrder/remark/index'
     ],
     "requiredPrivateInfos": [
         "getLocation",
