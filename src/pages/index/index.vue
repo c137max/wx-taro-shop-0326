@@ -79,13 +79,20 @@ const isLoadingMore = ref(false);
 
 const slideshowList = ref([
   // 'https://storage.360buyimg.com/jdc-article/NutUItaro34.jpg',
-  // 'https://storage.360buyimg.com/jdc-article/NutUItaro2.jpg',
-  // 'https://storage.360buyimg.com/jdc-article/welcomenutui.jpg',
-  // 'https://storage.360buyimg.com/jdc-article/fristfabu.jpg'
 ])
 
 const commodities = [
-
+  // {
+  //   id: 1,
+  //   title: '广西灵山黄皮果本地产水果 4.5-5斤重，免费寄送到小区',
+  //   price: 88,
+  //   unit: '公斤',
+  //   preSale: true,
+  //   salesVolume: 199,
+  //   salesVolumeDesc: '本店黄皮果销量第1名',
+  //   explain: '包邮 送货到小区',
+  //   image: 'https://th.bing.com/th/id/R.d5282a04673094f3d611a5cffb89d8c6?rik=XitV%2br8b%2bmrIOA&riu=http%3a%2f%2fimg4.taojindi.com%2ftc%2fW%2f201607%2f1469094146843.jpg&ehk=d7vRqUqTT9TgQTkxpz9fx8Tm1Iy%2fkt1NrL2J7iCPDHk%3d&risl=&pid=ImgRaw&r=0'
+  // },
 ]
 const handleTabClick = (index) => {
   activeIndex.value = index;

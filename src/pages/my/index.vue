@@ -1,15 +1,15 @@
 <template>
-  <view className="flex gap-5 shadow m-3 p-2 rounded-lg bg-white outline-zinc-600">
+  <view className="flex gap-5  p-2 rounded-lg bg-white ">
     <view  class="drop-shadow h-16 w-16 rounded-full overflow-hidden shadow-lg">
       <image  class="w-16 h-16 rounded-full  m-auto"  :src="userInfo.avatarUrl"></image>
     </view>
     <view className="flex flex-col justify-around font-serif text-neutral-600">
       <view>{{ userInfo.nickName }}</view>
-      <view className="font-mono font-light text-blue-500" @click="toUpdateInfo">使用微信头像和昵称</view>
+      <view className="font-mono font-light text-sm text-gray-400" @click="toUpdateInfo">使用微信头像和昵称</view>
     </view>
   </view>
 
-  <view className="m-3 shadow rounded-lg h-max bg-white">
+  <view className="rounded-lg h-max bg-white">
     <nut-cell-group>
       <nut-cell title="我的配送点" @click="goToDeliverLocation" is-link>
         <template #icon>
@@ -36,7 +36,6 @@
           <IconFont name="edit"></IconFont>
         </template>
       </nut-cell>
-
       <nut-cell title="退出登录" is-link @click="showExitDialog = true">
         <template #icon>
           <IconFont name="circle-close"></IconFont>
@@ -48,7 +47,6 @@
         </template>
       </nut-cell>
     </nut-cell-group>
-
   </view>
   <nut-action-sheet title="更多" v-model:visible="showMore" :menu-items="menuItems" @choose="choose"/>
   <nut-popup v-model:visible="showLoginCard" position="bottom" round :close-on-click-overlay="false" :closeable="false" :style="{ height: '70%' }">
@@ -165,5 +163,8 @@ const menuItems = [
 </script>
 
 <style>
-
+.nut-cell-group__wrap {
+  box-shadow: none;
+  -webkit-box-shadow: none;
+}
 </style>
